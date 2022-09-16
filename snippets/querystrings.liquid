@@ -1,0 +1,28 @@
+{%- capture XXXcontentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign XXXpageUrl = XXXcontentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+   replace:'\/','/' | 
+   replace:'%20',' ' | 
+   replace:'\u0026','&'
+-%}
+{% assign QUERYSTRINGTOPIDS = '' %}
+{%- for i in (1..1) -%}
+  {%- unless XXXpageUrl contains "?" -%}{% break %}{%- endunless -%}
+
+  {%- assign XXXpageQuerystring = XXXpageUrl | split:'?' | last -%}
+
+  {%- assign XXXparts = XXXpageQuerystring | split:'&' -%}
+
+  {%- for XXXpart in XXXparts -%}
+
+    {%- assign XXXkeyAndValue = XXXpart | split:'=' -%}
+
+    {%- if XXXkeyAndValue.size > 1 -%} 
+      {% if XXXkeyAndValue[0] == "gid" and XXXkeyAndValue[1] != "" %}
+      	  {% assign QUERYSTRINGTOPIDS = XXXkeyAndValue[1] | replace:'%2C',',' %}
+      {% endif %}
+    {%- else -%}
+     
+    {%- endif -%}
+
+  {%- endfor -%}
+{%- endfor -%}

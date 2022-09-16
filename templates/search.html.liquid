@@ -1,0 +1,20 @@
+{% layout none %}
+
+{%- if search.types contains 'product' -%}
+
+{%- include 'querystrings' -%}
+
+{%- assign TOPIDS = QUERYSTRINGTOPIDS | split:',' -%}
+{%- for TOPID in TOPIDS -%}
+  {%- for result in search.results-%}
+	{% assign PRODUCTID = result.id | downcase %}
+    {%- if PRODUCTID == TOPID -%}
+      {%- capture settings -%}
+      	show_hover_image: false
+      {%- endcapture -%}
+      {% assign settings = settings | split:',' %}
+      {% render 'product-block', product: result, settings: settings, no_swiping: false, custom_aspect_ratio: chosen_product_aspect_ratio, animate: false %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- endif -%}

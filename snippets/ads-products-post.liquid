@@ -1,0 +1,12 @@
+<script type="text/javascript">
+  var regex = new RegExp("(^|&)" + 'gid' + "=([^&]*)(&|$)", "i"); 
+  var matches = window.location.search.substr(1).match(regex); 
+  if (matches && unescape(matches[2])) {
+    var query_string = matches[2];
+        query_string = query_string.replace(/%2C/g, ',');
+    var ids = query_string.split(',');
+    for (var i = 0, length = ids.length; i < length; ++i) {
+      jQuery('div.product-list div[data-product-id="'+ ids[i] +'"]').remove();
+    }
+  }
+</script>

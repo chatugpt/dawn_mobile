@@ -1,0 +1,24 @@
+<script type="text/javascript">
+  var regex = new RegExp("(^|&)" + 'gid' + "=([^&]*)(&|$)", "i"); 
+  var matches = window.location.search.substr(1).match(regex); 
+  if (matches && unescape(matches[2])) {
+    var query_string = matches[2];
+        query_string = query_string.replace(/%2C/g, ',');
+    var paramer = 'id:' + query_string.replace(/,/g, '%20OR%20id:');
+    jQuery.ajax({
+      url: '/search?view=html&q='+paramer+'&type=product&gid='+query_string,
+      method:"get",
+      data:{
+      },
+      dataType: "html",
+      success:function(html) {
+        if(html.indexOf("Search is currently not available.") === -1) {
+        	jQuery("div.product-list").prepend(html);
+        }
+      },
+      error: function(response) {
+        console.log(response);
+      }
+    });
+  }
+</script>
